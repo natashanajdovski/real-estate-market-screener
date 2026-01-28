@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Market Screener</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Real Estate Market Screener</h1>
+        <p class="subtitle">Find high-yield rental markets with growth fundamentals</p>
+    </header>
+
+    <main>
+        <!-- Filters Section -->
+        <section class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="maxPrice">Max Price</label>
+                    <input type="range" id="maxPrice" min="100000" max="1000000" step="25000" value="300000">
+                    <span id="maxPriceValue">$300,000</span>
+                </div>
+
+                <div class="filter-group">
+                    <label for="minYield">Min Yield</label>
+                    <input type="range" id="minYield" min="0" max="15" step="0.5" value="5">
+                    <span id="minYieldValue">5%</span>
+                </div>
+
+                <div class="filter-group">
+                    <label for="maxAirportDist">Max Airport Distance</label>
+                    <input type="range" id="maxAirportDist" min="10" max="200" step="10" value="30">
+                    <span id="maxAirportDistValue">30 mi</span>
+                </div>
+
+                <div class="filter-group">
+                    <label for="marketType">Market Type</label>
+                    <select id="marketType">
+                        <option value="all">All Markets</option>
+                        <option value="High Yield">High Yield (8%+)</option>
+                        <option value="Growth">Growth</option>
+                        <option value="Both">Both</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>States</label>
+                    <div class="state-dropdown" id="stateDropdown">
+                        <button type="button" class="state-dropdown-btn" id="stateDropdownBtn">
+                            <span id="stateDropdownLabel">All States</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="state-dropdown-menu" id="stateDropdownMenu">
+                            <div class="state-search-container">
+                                <input type="text" id="stateSearch" placeholder="Search states..." class="state-search-input">
+                            </div>
+                            <div class="state-actions">
+                                <button type="button" id="selectAllStates" class="state-action-btn">Select All</button>
+                                <button type="button" id="deselectAllStates" class="state-action-btn">Deselect All</button>
+                            </div>
+                            <div id="stateOptionsList" class="state-options-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button id="resetFilters" class="btn-secondary">Reset Filters</button>
+                <button id="exportExcel" class="btn-primary">Export to Excel</button>
+                <span id="resultCount" class="result-count"></span>
+            </div>
+        </section>
+
+        <!-- Data Table -->
+        <section class="table-container">
+            <table id="metroTable">
+                <thead>
+                    <tr>
+                        <th data-sort="rank" class="sortable">Rank</th>
+                        <th data-sort="name" class="sortable">Metro</th>
+                        <th data-sort="market_type" class="sortable">Type</th>
+                        <th data-sort="composite_score" class="sortable sorted-desc">Score <span class="tooltip" data-tip="Composite score (0-100) based on yield, population growth, job growth, rent growth, landlord-friendliness, and vacancy rate">?</span></th>
+                        <th data-sort="median_price" class="sortable">Price <span class="tooltip" data-tip="Source: Zillow ZHVI (Dec 2025). Median home value for single-family residences.">?</span></th>
+                        <th data-sort="gross_yield" class="sortable">Yield <span class="tooltip" data-tip="Source: Zillow ZHVI & ZORI (Dec 2025). Gross yield = (Annual Rent / Price) × 100">?</span></th>
+                        <th data-sort="pop_growth_yoy" class="sortable">Pop Growth <span class="tooltip" data-tip="Source: Census Bureau (2023→2024). Year-over-year population change.">?</span></th>
+                        <th data-sort="job_growth_yoy" class="sortable">Job Growth <span class="tooltip" data-tip="Source: BLS QCEW (2024 Annual). Year-over-year private sector employment change.">?</span></th>
+                        <th data-sort="crime_rate" class="sortable">Crime <span class="tooltip" data-tip="Source: FBI Crime Data (2023). State-level violent crime rate per 100k population.">?</span></th>
+                        <th data-sort="airport_distance_miles" class="sortable">Airport Dist. <span class="tooltip" data-tip="Distance to nearest FAA Large or Medium hub airport.">?</span></th>
+                        <th>Listings</th>
+                    </tr>
+                </thead>
+                <tbody id="metroTableBody">
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Detail Modal -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Data sources: <a href="https://www.zillow.com/research/data/" target="_blank">Zillow</a> |
+        <a href="https://www.census.gov/data.html" target="_blank">Census Bureau</a> |
+        <a href="https://www.bls.gov/cew/" target="_blank">BLS</a> |
+        <a href="https://www.faa.gov/airports/planning_capacity/categories" target="_blank">FAA</a> |
+        <a href="https://cde.ucr.cjis.gov/" target="_blank">FBI Crime Data</a></p>
+        <p>Last updated: <span id="lastUpdated"></span></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
