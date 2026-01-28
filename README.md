@@ -136,13 +136,16 @@ real-estate-investment-analysis/
 # 1. Fetch Zillow data
 python scripts/fetch_data.py
 
-# 2. Fetch FBI crime data (API key in script)
+# 2. Set FBI API key (get free key at https://api.data.gov/signup/)
+export FBI_API_KEY='your-api-key-here'
+
+# 3. Fetch FBI crime data
 python scripts/fetch_crime_data.py
 
-# 3. Build the dataset
+# 4. Build the dataset
 python scripts/build_dataset.py
 
-# 4. Start local server
+# 5. Start local server
 python -m http.server 8000
 ```
 

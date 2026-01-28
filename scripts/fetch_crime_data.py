@@ -10,9 +10,12 @@ API Documentation: https://cde.ucr.cjis.gov/
 import requests
 import json
 import time
+import os
 from pathlib import Path
 
-API_KEY = "ftayf6L7YL8Hs1nbDFTF3RnfQFETXw3emv1Mq3Th"
+# API key should be set as environment variable: FBI_API_KEY
+# Get your key at: https://api.data.gov/signup/
+API_KEY = os.environ.get("FBI_API_KEY")
 BASE_URL = "https://api.usa.gov/crime/fbi/cde"
 
 # All US states
@@ -134,5 +137,11 @@ def save_crime_data(crime_rates):
     return output
 
 if __name__ == "__main__":
+    if not API_KEY:
+        print("Error: FBI_API_KEY environment variable not set.")
+        print("Get your free API key at: https://api.data.gov/signup/")
+        print("Then set it with: export FBI_API_KEY='your-key-here'")
+        exit(1)
+
     crime_rates = fetch_all_state_crime_rates()
     save_crime_data(crime_rates)
